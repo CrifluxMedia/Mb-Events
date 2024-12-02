@@ -14,6 +14,7 @@ const CreateEvent = () => {
   const [tagInput, setTagInput] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
+    title: "",
     date: "",
     startTime: "",
     endTime: "",
@@ -70,17 +71,14 @@ const CreateEvent = () => {
     }
 
     // Append the tags array as a stringified JSON
-    formDataToSend.append("tags", JSON.stringify(tags));
+    formDataToSend.append("tags", tags);
 
     // Append online and free fields
     formDataToSend.append("online", online);
     formDataToSend.append("free", free);
     formDataToSend.append("image", file);
 
-    // Debugging: Log the formData entries
-    for (let pair of formDataToSend.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
+    
 
     // Make the API request (you can use fetch/axios here)
   };
@@ -134,6 +132,20 @@ const CreateEvent = () => {
               )}
             </div>
           </div>
+          {/* title */}
+          <div className="mt-3">
+            <label htmlFor="title" className="form-label fs-4 fw-semibold">
+              Title
+            </label>
+            <input
+              style={{ width: "279px" }}
+              required
+              id="title"
+              type="text"
+              placeholder="Event Title"
+              className="form-control bg-secondary-subtle py-2 shadow-none"
+            />
+          </div>
 
           {/* Date and Time */}
           <div className="mt-3">
@@ -147,6 +159,7 @@ const CreateEvent = () => {
               <input
                 id="date"
                 type="date"
+                required
                 className="form-control shadow-none bg-secondary-subtle py-2"
                 name="date"
                 onChange={handleChange}
@@ -161,6 +174,7 @@ const CreateEvent = () => {
                 <input
                   id="start"
                   type="time"
+                  required
                   className="form-control shadow-none bg-secondary-subtle py-2"
                   name="startTime"
                   onChange={handleChange}
@@ -230,6 +244,7 @@ const CreateEvent = () => {
             </label>
             <textarea
               id="desc"
+              required
               className="form-control bg-secondary-subtle shadow-none"
               rows="12"
               name="description"
@@ -252,6 +267,7 @@ const CreateEvent = () => {
                 </label>
                 <select
                   id="category"
+                  required
                   className="form-select shadow-none border border-1 py-2"
                   name="category"
                   onChange={handleChange}
