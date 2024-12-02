@@ -5,18 +5,35 @@ import ActionBtn from "../components/ActionBtn";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { forgotPasswordSchema } from "../utils/formValidator";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(forgotPasswordSchema),
   });
+  const url =
+    "https://mbevents-server-mercy.onrender.com/api/v1/forgot-password";
 
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      const result = await axios.post(url, data);
+      if (result.status === 200) {
+        toast.success("Password rest link sent to your mail", {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message, {
+        position: "top-center",
+        autoClose: 8000,
+      });
+    }
   };
   return (
     <div className="vh-100 d-flex justify-content-center align-items-center reset-container">
@@ -39,9 +56,10 @@ const ForgotPassword = () => {
         )}
         <ActionBtn
           width={"100%"}
-          content="Reset Password"
+          content={isSubmitting ? "Reset Password..." : "Reset Password"}
           type="submit"
-          className="specialbtn mt-2"
+          className={isSubmitting ? "mt-2 bg-secondary" : "specialbtn mt-2"}
+          disable={isSubmitting}
         />
       </form>
     </div>

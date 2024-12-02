@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ActionBtn from "../components/ActionBtn";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { resetPasswordScchema } from "../utils/formValidator";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
+import {toast } from "react-toastify";
 const ResetPassword = () => {
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const toggleShow = () => setShow(!show);
   const toggleShow2 = () => setShow2(!show2);
+  const redirect = useNavigate()
   const {
     register,
     handleSubmit,
@@ -24,10 +27,26 @@ const ResetPassword = () => {
   const urlParams = new URLSearchParams(location.search);
   const token = urlParams.get("token");
   console.log({ token });
+  const url = "https://mbevents-server-mercy.onrender.com/api/v1/reset-password";
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // Handle form submission logic here
-    console.log(data);
+    if(token) {
+       const newPassword = data.password;
+       console.log(newPassword, token);
+       try {
+          const result = await axios.post(url, body)
+          if(result.status === 200) {
+            toast.success('password reset successful')
+            redirect("/login");
+          }
+       } catch (error) {
+         toast.error(error?.response?.data?.message || error?.message, {
+           position: "top-center",
+           autoClose: 8000,
+         });
+       }
+    }
   };
 
   return (

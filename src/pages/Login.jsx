@@ -1,32 +1,46 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ActionBtn from "../components/ActionBtn";
 import logo from "../assets/logo.png";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { loginSchema } from "../utils/formValidator";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Login = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const redirect = useNavigate();
+  const url = "htps://mbevents-server.onrender.com/api/v1/login";
 
   // Initialize useForm with yupResolver for validation
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(loginSchema),
   });
 
   const onSubmit = async (data) => {
-    setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Form Submitted", data);
-      setIsSubmitting(false);
-    }, 2000);
+    try {
+      const result = await axios.post(url, data);
+      if (result.status === 200) {
+        toast.success("Logged In Successfully", {
+          position: "top-center",
+        });
+        redirect("/");
+        localStorage.setItem("mb-token", result?.data?.token);
+        localStorage.setItem("user", result?.data?.user?.fullName);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message, {
+        position: "top-center",
+        autoClose: 8000,
+      });
+    }
   };
 
   return (
@@ -82,7 +96,7 @@ const Login = () => {
           width={"100%"}
           content={isSubmitting ? "Signing In..." : "Sign In"}
           type="submit"
-          className="specialbtn"
+          className={isSubmitting ? "bg-secondary" : "specialbtn"}
           disabled={isSubmitting}
         />
         <h2 className="my-3 fs-6">
