@@ -14,7 +14,6 @@ import {
   Hosting,
   Previous,
   Attending,
-  Bookmarked,
 } from "./pages";
 import { Suspense } from "react";
 import FallBackLoader from "./components/FallBackLoader";
@@ -40,7 +39,6 @@ function App() {
               <Route index element={<Hosting />} />
               <Route path="attending" element={<Attending />} />
               <Route path="previous" element={<Previous />} />
-              <Route path="saved" element={<Bookmarked />} />
             </Route>
           </Route>
 

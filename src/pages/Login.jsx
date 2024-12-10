@@ -12,7 +12,7 @@ import axios from "axios";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const redirect = useNavigate();
-  const url = "htps://mbevents-server.onrender.com/api/v1/login";
+  const url = "https://mbevents-server-mercy.onrender.com/api/v1/login";
 
   // Initialize useForm with yupResolver for validation
   const {

@@ -13,7 +13,7 @@ const UsersEvent = lazy(() => import("./UsersEvent"));
 const Hosting = lazy(() => import("./User Components/Hosting"));
 const Previous = lazy(() => import("./User Components/Previous"));
 const Attending = lazy(() => import("./User Components/Attending"));
-const Bookmarked = lazy(() => import("./User Components/Bookmarked"));
+
 export {
   Homepage,
   Events,
@@ -28,5 +28,4 @@ export {
   Hosting,
   Previous,
   Attending,
-  Bookmarked,
 };

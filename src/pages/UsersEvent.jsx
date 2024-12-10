@@ -10,7 +10,6 @@ const UsersEvent = () => {
     { id: 1, label: "Hosting", to: "/your-events" },
     { id: 2, label: "Attending", to: "attending" },
     { id: 3, label: "Previous", to: "previous" },
-    { id: 4, label: "Saved", to: "saved" },
   ];
 
   // Function to render links with appropriate classes based on current pathname
