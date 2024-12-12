@@ -5,8 +5,10 @@ import ActionBtn from "../components/ActionBtn";
 import SuccessModal from "../components/SuccessModal";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CreateEvent = () => {
+  const redirect = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [online, setOnline] = useState(false);
   const [file, setFile] = useState(null);
@@ -96,6 +98,18 @@ const CreateEvent = () => {
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message || error?.message);
+      if(error && error.status === 401){
+        toast.error('Session expired,login')
+        redirect('/')
+        localStorage.removeItem('mb-token')
+        localStorage('user')
+      }
+      if (error && error?.status === 401){
+        toast.error("Session Expired, Login");
+        localStorage.removeItem("mb-token");
+        localStorage.removeItem("user");
+        redirect("/login");
+      }
     } finally {
       setIsSubmitting(false);
       setFree(false);

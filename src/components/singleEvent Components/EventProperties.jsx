@@ -7,15 +7,14 @@ const EventProperties = ({
   _id,
   image,
   title,
+  category,
   location,
   date,
   tags,
   startTime,
   hostedBy,
   price,
-  description
-
-
+  description,
 }) => {
   return (
     <div className="container ">
@@ -47,12 +46,10 @@ const EventProperties = ({
             })}
           </div>
           <h1>{title} </h1>
-          <p>
-            {description}
-          </p>
+          <p>{description}</p>
         </div>
         <div className="col-md-4  text-white d-flex justify-content-start justify-content-md-end ">
-          <PaymentCard />
+          <PaymentCard price = {price} />
         </div>
       </div>
     </div>
